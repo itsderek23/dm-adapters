@@ -182,7 +182,7 @@ module DataMapper
             resource.instance_variable_set(key.instance_variable_name, result.id)
           else
             raise SalesforceAPI::CreateError, 
-              results.errors.map {|e| "#{e.statusCode}: #{e.message}"}.join(", ")
+              result.errors.map {|e| "#{e.statusCode}: #{e.message}"}.join(", ")
           end
         end.size
         
