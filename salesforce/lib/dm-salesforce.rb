@@ -78,7 +78,15 @@ module DataMapper
       def initialize(name, uri_or_options)
         super
         @resource_naming_convention = proc {|value| value.split("::").last}
-        @field_naming_convention = proc {|value| Extlib::Inflection.camelize(value)}
+        @field_naming_convention = proc do |value| 
+          if value.to_s =~ /__(c|r)/
+            name = $`
+            values = name.split('_')
+            values.map { |v| v == values.first ? v : v.capitalize }.join('_') + '__c'
+          else
+            Extlib::Inflection.camelize(value)
+          end
+        end
         connect!
       end
       
